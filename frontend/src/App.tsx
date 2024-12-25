@@ -1,7 +1,6 @@
 
 import './App.css'
 import PeriodPicker from "./components/TimePeriodComponent.tsx";
-import Agenda from "./components/Agenda.tsx";
 
 function App() {
 
@@ -9,7 +8,6 @@ function App() {
   return (
     <>
         <PeriodPicker></PeriodPicker>
-        <Agenda></Agenda>
     </>
   )
 }
