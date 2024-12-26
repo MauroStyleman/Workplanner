@@ -2,8 +2,8 @@
 
 public class Day
 {
-    Guid Id { get; set; }
-    DateOnly Date { get; set; }
-    List<DayShift> DayShifts { get; set; }
-    PlanningPeriod PlanningPeriod { get; set; }
+   public Guid Id { get; set; }
+   public DateOnly Date { get; set; }
+   public List<DayShift> DayShifts { get; set; }
+   public PlanningPeriod PlanningPeriod { get; set; }
 }

@@ -2,7 +2,7 @@
 
 public class PlanningPeriod
 {
-    Guid Id { get; set; }
-    DateOnly Start { get; set; }
-    DateOnly End { get; set; }
+  public  Guid Id { get; set; }
+  public  DateOnly Start { get; set; }
+  public  DateOnly End { get; set; }
 }

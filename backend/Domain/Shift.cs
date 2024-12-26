@@ -2,12 +2,12 @@
 
 public class Shift
 {
-    Guid Id { get; set; }
-    string Name { get; set; }
-    TimeOnly Start { get; set; }
-    TimeOnly End { get; set; }
-    Day Day { get; set; }
-    List<DayShift> DayShifts { get; set; }
+  public  Guid Id { get; set; }
+  public  string Name { get; set; }
+  public  TimeOnly Start { get; set; }
+  public  TimeOnly End { get; set; }
+  public  Day Day { get; set; }
+  public  List<DayShift> DayShifts { get; set; }
 
     
 }

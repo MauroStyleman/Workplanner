@@ -12,6 +12,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WorkPlannerDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
+builder.Services.AddScoped<IPlanningPeriodrepository,PlanningPeriodRepository>();
+
+
 
 var app = builder.Build();
 
