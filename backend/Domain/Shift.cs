@@ -6,5 +6,8 @@ public class Shift
     string Name { get; set; }
     TimeOnly Start { get; set; }
     TimeOnly End { get; set; }
+    Day Day { get; set; }
+    List<DayShift> DayShifts { get; set; }
+
     
 }
