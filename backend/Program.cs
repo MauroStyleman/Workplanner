@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Workplanner.BL;
 using Workplanner.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<WorkPlannerDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
 builder.Services.AddScoped<IPlanningPeriodrepository,PlanningPeriodRepository>();
+builder.Services.AddScoped<IPlanningPeriodManager,PlanningPeriodManager>();
 
 
 

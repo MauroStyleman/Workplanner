@@ -37,3 +37,15 @@ C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\obj\Debug\net7.0\refint\
 C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\obj\Debug\net7.0\Workplanner.pdb
 C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\obj\Debug\net7.0\Workplanner.genruntimeconfig.cache
 C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\obj\Debug\net7.0\ref\Workplanner.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Microsoft.Extensions.Logging.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Humanizer.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\Mono.TextTemplating.dll
+C:\Users\mauro\KDG\PersonalProjects\Workplanner\backend\bin\Debug\net7.0\System.CodeDom.dll

@@ -2,8 +2,8 @@
 
 public class User
 {
-    Guid Id { get; set; }
-    string FirstName { get; set; }
-    string LastName { get; set; }
+    public Guid Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
     
 }

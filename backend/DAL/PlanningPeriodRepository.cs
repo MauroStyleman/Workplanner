@@ -15,7 +15,7 @@ public class PlanningPeriodRepository : IPlanningPeriodrepository
     }
 
 
-    public PlanningPeriod? GetPlanningPeriodById(Guid id)
+    public PlanningPeriod? ReadPlanningPeriodById(Guid id)
     {
         _logger.LogInformation("Getting planning period by id.");
         return _context.PlanningPeriods.SingleOrDefault(p => p.Id == id);
