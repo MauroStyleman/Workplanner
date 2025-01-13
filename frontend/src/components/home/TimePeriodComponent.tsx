@@ -1,9 +1,9 @@
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import usePeriodPicker from '../hooks/UsePeriodPicker.ts'; // Import de custom hook
+import usePeriodPicker from '../../hooks/UsePeriodPicker.ts';
 
-function PeriodPicker() {
+export function PeriodPicker() {
     const { startDate, endDate, handleStartDateChange, handleEndDateChange } = usePeriodPicker();
 
     return (
@@ -27,4 +27,3 @@ function PeriodPicker() {
     );
 }
 
-export default PeriodPicker;

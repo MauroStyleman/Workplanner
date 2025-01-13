@@ -1,13 +1,12 @@
 
-import './App.css'
-import PeriodPicker from "./components/TimePeriodComponent.tsx";
+import {HomePage} from './components/home/HomePage.tsx'
 
 function App() {
 
 
   return (
     <>
-        <PeriodPicker></PeriodPicker>
+        <HomePage></HomePage>
     </>
   )
 }
