@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import {ChangeEvent, useState} from 'react';
 import { startOfMonth, endOfMonth } from 'date-fns';
 
 function usePeriodPicker() {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
+    const [name, setName] = useState<string>('');
 
     const handleStartDateChange = (date: Date | null) => {
         if (date) {
@@ -35,11 +36,17 @@ function usePeriodPicker() {
         }
     };
 
+    const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
+    };
+
     return {
         startDate,
         endDate,
         handleStartDateChange,
         handleEndDateChange,
+        handleNameChange,
+        name,
     };
 }
 

@@ -12,16 +12,13 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
+    backgroundColor: 'var(--background-secondary)',
+    boxShadow: '0px 20px 20px rgba(0, 0, 0, 0.6)',
     p: 4,
     borderRadius: 2,
 };
 
-const buttonStyle = {
-    color: 'white',
 
-}
 
 export function TimePeriodModal() {
     const [open, setOpen] = useState(false);
@@ -30,7 +27,19 @@ export function TimePeriodModal() {
 
     return (
         <div>
-            <Button style={buttonStyle} onClick={handleOpen}>Create WorkPlan</Button>
+            <Button
+                onClick={handleOpen}
+                sx={
+                    {
+                        color: 'var(--text)',
+                        backgroundColor: 'var(--primary)',
+                        '&:hover': {
+                            backgroundColor: 'var(--accent)',
+                            color: 'var(--text)',
+                        },
+                    }
+                }
+            >Create WorkPlan</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -38,17 +47,39 @@ export function TimePeriodModal() {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" color="black" sx={{ mb: 2 }}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2" color="var(--text)" sx={{mb: 2}}>
                         Create WorkPlan
                     </Typography>
                     <PeriodPicker />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}>
-                        <Button variant="outlined" onClick={handleClose}>
+                        <Button
+                            variant="outlined"
+                            onClick={handleClose}
+                            sx={{
+                                color: 'var(--secondary)',
+                                borderColor: 'var(--secondary)',
+                                '&:hover': {
+                                    backgroundColor: 'var(--accent)',
+                                    color: 'var(--text)',
+                                },
+                            }}
+                        >
                             Close
                         </Button>
-                        <Button variant="contained" onClick={handleClose}>
+                        <Button
+                            variant="contained"
+                            onClick={handleClose}
+                            sx={{
+                                backgroundColor: 'var(--primary)',
+                                color: 'var(--text)',
+                                '&:hover': {
+                                    backgroundColor: 'var(--accent)',
+                                },
+                            }}
+                        >
                             Create
                         </Button>
+
                     </Box>
                 </Box>
             </Modal>
