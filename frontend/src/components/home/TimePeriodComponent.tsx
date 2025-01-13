@@ -94,6 +94,7 @@ export function PeriodPicker() {
                             '& fieldset': { borderColor: 'var(--secondary)' },
                             '&:hover fieldset': { borderColor: 'var(--accent)' },
                             '&.Mui-focused fieldset': { borderColor: 'var(--accent)' },
+                            '& input': { color: 'var(--primary)' },
                         }
                     }}
                 />
