@@ -1,7 +1,6 @@
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
-import usePeriodPicker from '../../hooks/UsePeriodPicker.ts';
 import { TextField } from '@mui/material';
 
 
@@ -76,12 +75,26 @@ const datePickerStyles = {
 };
 
 
-export function PeriodPicker() {
-    const { startDate, endDate, handleStartDateChange, handleEndDateChange, handleNameChange, name} = usePeriodPicker();
+interface PeriodPickerProps {
+    name: string;
+    startDate: Date | null;
+    endDate: Date | null;
+    handleNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleStartDateChange: (date: Date | null) => void;
+    handleEndDateChange: (date: Date | null) => void;
+}
 
+export function PeriodPicker({
+                                 name,
+                                 startDate,
+                                 endDate,
+                                 handleNameChange,
+                                 handleStartDateChange,
+                                 handleEndDateChange,
+                             }: PeriodPickerProps) {
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <div style={{display: 'flex', gap: '1rem', flexDirection: 'column', maxWidth: '300px'}}>
+            <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', maxWidth: '300px' }}>
                 <TextField
                     label="Name"
                     value={name}
@@ -95,7 +108,7 @@ export function PeriodPicker() {
                             '&:hover fieldset': { borderColor: 'var(--accent)' },
                             '&.Mui-focused fieldset': { borderColor: 'var(--accent)' },
                             '& input': { color: 'var(--primary)' },
-                        }
+                        },
                     }}
                 />
                 <DatePicker
@@ -104,6 +117,7 @@ export function PeriodPicker() {
                     value={startDate}
                     onChange={handleStartDateChange}
                     slotProps={datePickerStyles}
+
                 />
                 <DatePicker
                     label="End Period"
@@ -116,4 +130,3 @@ export function PeriodPicker() {
         </LocalizationProvider>
     );
 }
-
