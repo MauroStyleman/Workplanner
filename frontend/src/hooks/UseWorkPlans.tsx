@@ -5,7 +5,7 @@ import { WorkplanData } from '../model/workplan';
 export function useWorkplans() {
     const queryClient = useQueryClient();
 
-    const { isPending, isError, data: workplans } = useQuery({
+    const { isLoading, isError, data: workplans } = useQuery({
         queryKey: ['workplans'],
         queryFn: fetchWorkplans,
         refetchInterval: 5000,
@@ -39,7 +39,7 @@ export function useWorkplans() {
     });
 
     return {
-        isPending,
+        isLoading,
         isError,
         workplans,
         addWorkplan,

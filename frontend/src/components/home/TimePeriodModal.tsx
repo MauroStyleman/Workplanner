@@ -17,6 +17,45 @@ const style = {
     borderRadius: 2,
 };
 
+function CloseButton(props: { onClick: () => void, disabled: false | true }) {
+    return <Button
+        variant="outlined"
+        onClick={props.onClick}
+        disabled={props.disabled}
+        sx={{
+            color: "var(--secondary)",
+            borderColor: "var(--secondary)",
+            "&:hover": {
+                backgroundColor: "var(--accent)",
+                color: "var(--text)",
+            },
+        }}
+    >
+        Close
+    </Button>;
+}
+
+function CreateButton(props: { onClick: () => void, disabled: false | true }) {
+    return <Button
+        variant="contained"
+        onClick={props.onClick}
+        disabled={props.disabled}
+        sx={{
+            backgroundColor: "var(--primary)",
+            color: "var(--text)",
+            "&:hover": {
+                backgroundColor: "var(--accent)",
+            },
+        }}
+    >
+        {props.disabled ? (
+            <CircularProgress size={24} sx={{color: "var(--text)"}}/>
+        ) : (
+            "Create"
+        )}
+    </Button>;
+}
+
 export function TimePeriodModal() {
     const { addWorkplan, isAddingWorkplan, isErrorWorkplan } = useWorkplans();
     const [open, setOpen] = useState(false);
@@ -53,6 +92,9 @@ export function TimePeriodModal() {
     };
 
     const handleOpen = () => {
+        setName('');
+        setStartDate(null);
+        setEndDate(null);
         setOpen(true);
     };
 
@@ -81,9 +123,17 @@ export function TimePeriodModal() {
             end: endFormatted,
         };
 
-        addWorkplan(newWorkplan);
-
+        addWorkplan(newWorkplan, {
+            onSuccess: () => {
+                setOpen(false);
+                setError(null);
+            },
+            onError: () => {
+                setError("Failed to create workplan. Please try again.");
+            },
+        });
     };
+
 
     return (
         <div>
@@ -107,7 +157,7 @@ export function TimePeriodModal() {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" color="var(--text)" sx={{ mb: 2 }}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2" color="var(--text)" sx={{mb: 2}}>
                         Create WorkPlan
                     </Typography>
                     <PeriodPicker
@@ -119,49 +169,18 @@ export function TimePeriodModal() {
                         handleEndDateChange={handleEndDateChange}
                     />
                     {error && (
-                        <Typography color="error" sx={{ mt: 2 }}>
+                        <Typography color="error" sx={{mt: 2}}>
                             {error}
                         </Typography>
                     )}
                     {isErrorWorkplan && (
-                        <Typography color="error" sx={{ mt: 2 }}>
+                        <Typography color="error" sx={{mt: 2}}>
                             Failed to create workplan. Please try again.
                         </Typography>
                     )}
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}>
-                        <Button
-                            variant="outlined"
-                            onClick={handleClose}
-                            disabled={isAddingWorkplan}
-                            sx={{
-                                color: 'var(--secondary)',
-                                borderColor: 'var(--secondary)',
-                                '&:hover': {
-                                    backgroundColor: 'var(--accent)',
-                                    color: 'var(--text)',
-                                },
-                            }}
-                        >
-                            Close
-                        </Button>
-                        <Button
-                            variant="contained"
-                            onClick={handleCreate}
-                            disabled={isAddingWorkplan}
-                            sx={{
-                                backgroundColor: 'var(--primary)',
-                                color: 'var(--text)',
-                                '&:hover': {
-                                    backgroundColor: 'var(--accent)',
-                                },
-                            }}
-                        >
-                            {isAddingWorkplan ? (
-                                <CircularProgress size={24} sx={{ color: 'var(--text)' }} />
-                            ) : (
-                                'Create'
-                            )}
-                        </Button>
+                    <Box sx={{display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3}}>
+                        <CloseButton onClick={handleClose} disabled={isAddingWorkplan}/>
+                        <CreateButton onClick={handleCreate} disabled={isAddingWorkplan}/>
                     </Box>
                 </Box>
             </Modal>

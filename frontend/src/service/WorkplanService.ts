@@ -12,6 +12,7 @@ export const createWorkplan = (newWorkplan: WorkplanData) => {
 
 
 
-export const fetchWorkplans = () => {
-    return axios.get(`http://localhost:5077/api/PlanningPeriod`);
+export const fetchWorkplans = async () => {
+   const response = await axios.get(`http://localhost:5077/api/PlanningPeriod`);
+    return response.data;
 }
