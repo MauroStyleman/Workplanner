@@ -40,4 +40,10 @@ public class PlanningPeriodManager : IPlanningPeriodManager
         return planningPeriod;
 
     }
+
+    public IEnumerable<PlanningPeriod> GetAllPlanningPeriods()
+    {
+        _logger.LogInformation("Getting all planning periods.");
+        return _planningPeriodRepository.ReadAllPlanningPeriods();
+    }
 }

@@ -28,4 +28,10 @@ public class PlanningPeriodRepository : IPlanningPeriodrepository
         _context.SaveChanges();
         _logger.LogInformation("Planning period created.");
     }
+
+    public IEnumerable<PlanningPeriod> ReadAllPlanningPeriods()
+    {
+        _logger.LogInformation("Getting all planning periods.");
+        return _context.PlanningPeriods.ToList();
+    }
 }

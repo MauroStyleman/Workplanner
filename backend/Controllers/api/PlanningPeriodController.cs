@@ -49,4 +49,17 @@ public class PlanningPeriodController : ControllerBase
             planningPeriod);
     }
     
+    [HttpGet]
+    public ActionResult<IEnumerable<PlanningPeriodDto>> GetAllPlanningPeriods()
+    {
+        var planningPeriods = _manager.GetAllPlanningPeriods();
+        return Ok(planningPeriods.Select(p => new PlanningPeriodDto()
+        {
+            Id = p.Id,
+            Start = p.Start,
+            End = p.End,
+            Name = p.Name
+        }));
+    }
+    
 }

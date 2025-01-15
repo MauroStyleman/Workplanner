@@ -8,4 +8,6 @@ public interface IPlanningPeriodrepository
     
     void CreatePlanningPeriod(PlanningPeriod planningPeriod);
     
+    IEnumerable<PlanningPeriod> ReadAllPlanningPeriods();
+    
 }
