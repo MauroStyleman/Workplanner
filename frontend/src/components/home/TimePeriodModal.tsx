@@ -1,10 +1,9 @@
 import { Button, Modal, Box, Typography, CircularProgress } from '@mui/material';
-import {useState} from "react";
-import {PeriodPicker} from "./TimePeriodComponent.tsx";
-import usePeriodPicker from "../../hooks/UsePeriodPicker.ts";
-import {WorkplanData} from "../../model/workplan.ts";
-import {createWorkplan} from "../../service/WorkplanService.ts";
-
+import { ChangeEvent, useState } from "react";
+import { PeriodPicker } from "./PeriodPicker.tsx";
+import {startOfMonth, endOfMonth, format} from "date-fns";
+import { useWorkplans } from "../../hooks/UseWorkPlans.tsx";
+import { WorkplanData } from "../../model/workplan.ts";
 
 const style = {
     position: 'absolute',
@@ -18,57 +17,72 @@ const style = {
     borderRadius: 2,
 };
 
-
-
 export function TimePeriodModal() {
+    const { addWorkplan, isAddingWorkplan, isErrorWorkplan } = useWorkplans();
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
+    const [name, setName] = useState<string>('');
 
-    const {
-        name,
-        startDate,
-        endDate,
-        handleNameChange,
-        handleStartDateChange,
-        handleEndDateChange,
-    } = usePeriodPicker();
+    const handleStartDateChange = (date: Date | null) => {
+        if (date) {
+            const firstDay = startOfMonth(date);
+            setStartDate(firstDay);
 
-    const handleOpen = () => setOpen(true);
+            if (endDate && endDate < firstDay) {
+                setEndDate(firstDay);
+            }
+        }
+    };
+
+    const handleEndDateChange = (date: Date | null) => {
+        if (date) {
+            const lastDay = endOfMonth(date);
+
+            if (startDate && lastDay <= startDate) {
+                setEndDate(startDate);
+            } else {
+                setEndDate(lastDay);
+            }
+        }
+    };
+
+    const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
     const handleClose = () => {
-        if (!loading) {
+        if (!isAddingWorkplan) {
             setOpen(false);
             setError(null);
         }
     };
 
-    const handleCreate = async () => {
+    const handleCreate = () => {
         if (!name || !startDate || !endDate) {
-            console.log(name);
-            console.log(startDate);
-            console.log(endDate);
             setError('All fields are required.');
             return;
         }
 
-        setLoading(true);
-        setError(null);
+        const startDateOnly = new Date(startDate);
+        const endDateOnly = new Date(endDate);
+
+        const startFormatted = format(startDateOnly, 'yyyy-MM-dd');
+        const endFormatted = format(endDateOnly, 'yyyy-MM-dd');
 
         const newWorkplan: WorkplanData = {
             name,
-            start_date: startDate,
-            end_date: endDate,
+            start: startFormatted,
+            end: endFormatted,
         };
 
-        try {
-            await createWorkplan(newWorkplan);
-            setLoading(false);
-            setOpen(false);
-        } catch (err) {
-            setLoading(false);
-            setError('Failed to create workplan. Please try again.');
-            console.log(err)
-        }
+        addWorkplan(newWorkplan);
+
     };
 
     return (
@@ -109,11 +123,16 @@ export function TimePeriodModal() {
                             {error}
                         </Typography>
                     )}
+                    {isErrorWorkplan && (
+                        <Typography color="error" sx={{ mt: 2 }}>
+                            Failed to create workplan. Please try again.
+                        </Typography>
+                    )}
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}>
                         <Button
                             variant="outlined"
                             onClick={handleClose}
-                            disabled={loading}
+                            disabled={isAddingWorkplan}
                             sx={{
                                 color: 'var(--secondary)',
                                 borderColor: 'var(--secondary)',
@@ -128,7 +147,7 @@ export function TimePeriodModal() {
                         <Button
                             variant="contained"
                             onClick={handleCreate}
-                            disabled={loading}
+                            disabled={isAddingWorkplan}
                             sx={{
                                 backgroundColor: 'var(--primary)',
                                 color: 'var(--text)',
@@ -137,7 +156,7 @@ export function TimePeriodModal() {
                                 },
                             }}
                         >
-                            {loading ? (
+                            {isAddingWorkplan ? (
                                 <CircularProgress size={24} sx={{ color: 'var(--text)' }} />
                             ) : (
                                 'Create'

@@ -2,8 +2,8 @@
 export type Workplan = {
     id: number;
     name: string;
-    start_date: Date;
-    end_date: Date;
+    start: string;
+    end: string;
 };
 
 export type WorkplanData = Omit<Workplan, 'id'>;
