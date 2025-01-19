@@ -31,7 +31,8 @@ public class ShiftController : ControllerBase
             Id = shift.Id,
             Start = shift.Start,
             End = shift.End,
-            Name = shift.Name
+            Name = shift.Name,
+            Color = shift.Color
         }); 
     }
     
@@ -54,12 +55,13 @@ public class ShiftController : ControllerBase
     public ActionResult<IEnumerable<ShiftDto>> GetAllShifts()
     {
         var shifts = _manager.GetAllShifts();
-        return Ok(shifts.Select(p => new ShiftDto()
+        return Ok(shifts.Select(shift => new ShiftDto()
         {
-            Id = p.Id,
-            Start = p.Start,
-            End = p.End,
-            Name = p.Name
+            Id = shift.Id,
+            Start = shift.Start,
+            End = shift.End,
+            Name = shift.Name,
+            Color = shift.Color
         }));
     }
     

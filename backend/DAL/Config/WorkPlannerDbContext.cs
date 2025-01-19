@@ -29,6 +29,10 @@ public class WorkPlannerDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasMany(u => u.PlanningShifts)
             .WithOne(ps => ps.User);
+        
+        modelBuilder.Entity<Shift>()
+            .HasIndex(s => s.Name)
+            .IsUnique(); 
 
         base.OnModelCreating(modelBuilder);
     }

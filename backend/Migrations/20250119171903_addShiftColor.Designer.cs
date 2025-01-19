@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Workplanner.DAL;
@@ -11,9 +12,11 @@ using Workplanner.DAL;
 namespace Workplanner.Migrations
 {
     [DbContext(typeof(WorkPlannerDbContext))]
-    partial class WorkPlannerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250119171903_addShiftColor")]
+    partial class addShiftColor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -28,7 +28,8 @@ public class ShiftManager : IShiftManager
         {
             Name = name,
             Start = start,
-            End = end
+            End = end,
+            Color = ShiftColors.GetNextColor()
         };
         _shiftRepository.CreateShift(shift);
     
