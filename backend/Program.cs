@@ -26,7 +26,8 @@ builder.Services.AddDbContext<WorkPlannerDbContext>(options =>
 
 builder.Services.AddScoped<IPlanningPeriodrepository,PlanningPeriodRepository>();
 builder.Services.AddScoped<IPlanningPeriodManager,PlanningPeriodManager>();
-
+builder.Services.AddScoped<IShiftRepository,ShiftRepository>();
+builder.Services.AddScoped<IShiftManager,ShiftManager>();
 
 
 var app = builder.Build();

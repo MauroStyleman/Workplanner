@@ -6,9 +6,9 @@ namespace Workplanner.DAL;
 public class WorkPlannerDbContext : DbContext
 {
   public  DbSet<PlanningPeriod> PlanningPeriods { get; set; }
-  public  DbSet<Day> Days { get; set; }
+  public  DbSet<User> Users { get; set; }
   public  DbSet<Shift> Shifts { get; set; }
-  public  DbSet<DayShift> DayShifts { get; set; }
+  public  DbSet<PlanningShift> PlanningShifts { get; set; }
     
     public WorkPlannerDbContext(DbContextOptions<WorkPlannerDbContext> options) 
         : base(options)
@@ -17,33 +17,20 @@ public class WorkPlannerDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Day>()
-            .HasOne(d => d.PlanningPeriod) 
-            .WithMany(pp => pp.Days) 
-            .OnDelete(DeleteBehavior.Cascade);  
-
-    
-        modelBuilder.Entity<DayShift>()
-            .HasKey(ds => new { ds.DayId, ds.ShiftId });
-
-        modelBuilder.Entity<DayShift>()
-            .HasOne(ds => ds.Day)
-            .WithMany(d => d.DayShifts);
-
-        modelBuilder.Entity<DayShift>()
-            .HasOne(ds => ds.Shift)
-            .WithMany(s => s.DayShifts);
-
-        modelBuilder.Entity<Shift>()
-            .HasMany(s => s.DayShifts)
-            .WithOne(ds => ds.Shift);
 
         modelBuilder.Entity<PlanningPeriod>()
-            .HasKey(pp => pp.Id);  
+            .HasMany(pp => pp.PlanningShifts)
+            .WithOne(ps => ps.PlanningPeriod);
+
+        modelBuilder.Entity<Shift>()
+            .HasMany(s => s.PlanningShifts)
+            .WithOne(ps => ps.Shift);
 
         modelBuilder.Entity<User>()
-            .HasKey(u => u.Id);  
+            .HasMany(u => u.PlanningShifts)
+            .WithOne(ps => ps.User);
 
         base.OnModelCreating(modelBuilder);
     }
+
 }

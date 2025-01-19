@@ -1,13 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Workplanner.Domain;
+namespace Workplanner.Controllers.dto;
 
-public class Shift
+public class ShiftDto
 {
     public Guid Id { get; set; }
-    [Required] [MaxLength(20)] public string Name { get; set; }
     [Required] public TimeOnly Start { get; set; }
     [Required] public TimeOnly End { get; set; }
-
-    public List<PlanningShift> PlanningShifts { get; set; }
+    [Required] [MaxLength(20)] public required string Name { get; set; }
 }
