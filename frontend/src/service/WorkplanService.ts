@@ -16,3 +16,9 @@ export const fetchWorkplans = async () => {
    const response = await axios.get(`http://localhost:5077/api/PlanningPeriod`);
     return response.data;
 }
+
+
+export const fetchWorkplan = async (workplanId: string) => {
+    const response = await axios.get(`http://localhost:5077/api/PlanningPeriod/${workplanId}`);
+    return response.data;
+}

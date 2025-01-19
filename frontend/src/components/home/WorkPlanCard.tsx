@@ -1,13 +1,16 @@
 import {Box, Button, Card, CardActions, CardContent, Typography} from '@mui/material';
-import {WorkplanData} from '../../model/workplan'; // Assuming this is your model
+import {Workplan} from '../../model/workplan';
+import {Link} from "react-router-dom";
 
 interface WorkplanCardProps {
-    workplan: WorkplanData;
-    onDelete: (workplan: WorkplanData) => void;
+    workplan: Workplan;
+    onDelete: (workplan: Workplan) => void;
 }
 
 export function WorkplanCard({workplan, onDelete}: WorkplanCardProps) {
     return (
+
+        <Link to={`/workplan/${workplan.id}`} style={{ textDecoration: 'none' }}>
         <Card
             sx={{
                 maxWidth: 345,
@@ -57,6 +60,8 @@ export function WorkplanCard({workplan, onDelete}: WorkplanCardProps) {
                 </Box>
             </CardActions>
         </Card>
+
+        </Link>
     );
 }
 

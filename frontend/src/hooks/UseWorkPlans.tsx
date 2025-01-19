@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createWorkplan, fetchWorkplans } from '../service/WorkplanService';
+import {createWorkplan, fetchWorkplan, fetchWorkplans} from '../service/WorkplanService';
 import { WorkplanData } from '../model/workplan';
 
 export function useWorkplans() {
@@ -49,5 +49,18 @@ export function useWorkplans() {
         status,
         failureCount,
         reset,
+    };
+}
+
+export  function  useWorkplan(workplanId: string) {
+    const { isLoading, isError, data: workplan } = useQuery({
+        queryKey: ['workplan', workplanId],
+        queryFn: () => fetchWorkplan(workplanId),
+    });
+
+    return {
+        isLoading,
+        isError,
+        workplan,
     };
 }
