@@ -1,19 +1,18 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { Box, CircularProgress, Typography } from "@mui/material";
-import { useWorkplan } from "../../hooks/UseWorkPlans.tsx";
-import { Calendar } from "./Calendar";
+import {useState} from "react";
+import {useParams} from "react-router-dom";
+import {Box, CircularProgress} from "@mui/material";
+import {useWorkplan} from "../../hooks/UseWorkPlans.tsx";
+import {Calendar} from "./Calendar";
 import {useShifts} from "../../hooks/UseShifts.tsx";
-import {Workplan} from "../../model/Workplan.ts";
-import WorkplanCard from "../home/WorkPlanCard.tsx";
 import {Shift} from "../../model/Shift.ts";
+import {ShiftList} from "../shift/ShiftList.tsx";
 
 // Helper function to format the date
 
 export function PlanPage() {
     const { id } = useParams<{ id: string }>();
-    const { isLoading: workplanLoading, isError: workplanError, workplan } = useWorkplan(id as string);
-    const { isLoading: shiftLoading, isError: shiftError, shifts } = useShifts();
+    const {isLoading: workplanLoading, isError: workplanError, workplan} = useWorkplan(id as string);
+    const {isLoading: shiftLoading, isError: shiftError, shifts} = useShifts();
 
 // You can now access workplan and shift along with their respective loading and error states
 
@@ -33,7 +32,7 @@ export function PlanPage() {
     }
 
     if (shiftLoading) {
-        return <CircularProgress size={24} sx={{ color: "var(--text)" }} />;
+        return <CircularProgress size={24} sx={{color: "var(--text)"}}/>;
     }
     if (shiftError) {
         return <div>Error loading shift.</div>;
@@ -98,33 +97,14 @@ export function PlanPage() {
 
 
     return (
-        <Box sx={{ padding: 3, display: 'flex', flexDirection: 'row', gap: 3 }}>
-            <Box sx={{ width: '30%', backgroundColor: "var(--background-secondary)", padding: 2 }}>
-                <Typography variant="h6">Shifts</Typography>
-                {shifts?.map((shift: Shift) => (
-                    <Box key={shift.id} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                        <Box
-                            sx={{
-                                width: 16,
-                                height: 16,
-                                borderRadius: '50%',
-                                backgroundColor: shift.color,
-                                marginRight: 2
-                            }}
-                        />
-                        <Typography variant="body1" sx={{ marginRight: 2, color: "var(--text)" }}>
-                            {shift.name}
-                        </Typography>
-                        <Typography variant="body2" color="var(--text)">
-                            {shift.start} - {shift.end}
-                        </Typography>
-                    </Box>
-                ))}
+        <Box sx={{padding: 3, display: 'flex', flexDirection: 'row', gap: 3}}>
+            <Box sx={{width: '30%', backgroundColor: "var(--background-secondary)", padding: 2}}>
+                <ShiftList shifts={shifts as Shift[]}/>
             </Box>
 
-            <Box sx={{ width: '70%' }}>
-                <Box sx={{ backgroundColor: "var(--background-secondary)", padding: 2 }}>
-                    <Box sx={{ marginBottom: 3 }}>
+            <Box sx={{width: '70%'}}>
+                <Box sx={{backgroundColor: "var(--background-secondary)", padding: 2}}>
+                    <Box sx={{marginBottom: 3}}>
                         <Calendar
                             weeks={weeks}
                             currentMonth={currentMonth}
