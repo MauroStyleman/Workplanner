@@ -6,7 +6,7 @@ public interface IShiftManager
 {
     Shift? GetShiftById(Guid id);
     
-    Shift AddShift(string name,TimeOnly start, TimeOnly end);
+    Shift AddShift(string name,string start, string end);
     
     IEnumerable<Shift> GetAllShifts();
 }

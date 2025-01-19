@@ -21,7 +21,7 @@ public class ShiftManager : IShiftManager
        return _shiftRepository.ReadShiftById(id);
     }
 
-    public Shift AddShift(string name, TimeOnly start, TimeOnly end)
+    public Shift AddShift(string name, string start, string end)
     {
         _logger.LogInformation("Adding a new shift.");
         var shift = new Shift()
@@ -31,8 +31,6 @@ public class ShiftManager : IShiftManager
             End = end,
             Color = ShiftColors.GetNextColor()
         };
-        _shiftRepository.CreateShift(shift);
-    
         _logger.LogInformation("Validating shift.");
         var validationContext = new ValidationContext(shift);
         Validator.ValidateObject(shift,validationContext,true);
