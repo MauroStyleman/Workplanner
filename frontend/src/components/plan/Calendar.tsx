@@ -71,7 +71,7 @@ export const Calendar = ({ weeks, currentMonth, totalMonths, currentMonthIndex, 
                                             backgroundColor: "var(--text)",
                                             color: "var(--text)",
                                             display: "flex",
-                                            justifyContent: "center",
+                                            justifyContent: "flex-end",
                                         }}
                                     >
                                         <Typography

@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from "react";
 import { PeriodPicker } from "./PeriodPicker.tsx";
 import {startOfMonth, endOfMonth, format} from "date-fns";
 import { useWorkplans } from "../../hooks/UseWorkPlans.tsx";
-import { WorkplanData } from "../../model/workplan.ts";
+import {WorkplanData} from "../../model/Workplan.ts";
 
 const style = {
     position: 'absolute',

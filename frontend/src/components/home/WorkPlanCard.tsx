@@ -1,5 +1,5 @@
 import {Box, Button, Card, CardActions, CardContent, Typography} from '@mui/material';
-import {Workplan} from '../../model/workplan';
+import {Workplan} from '../../model/Workplan.ts';
 import {Link} from "react-router-dom";
 
 interface WorkplanCardProps {

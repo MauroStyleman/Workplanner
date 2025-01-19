@@ -86,12 +86,14 @@ export function TimePeriodPicker({
                     value={startTime}
                     onChange={handleStartTimeChange}
                     slotProps={timePickerStyles}
+                    ampm={false}
                 />
                 <TimePicker
                     label="End Time"
                     value={endTime}
                     onChange={handleEndTimeChange}
                     slotProps={timePickerStyles}
+                    ampm={false}
                 />
             </div>
         </LocalizationProvider>

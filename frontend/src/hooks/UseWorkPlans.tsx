@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {createWorkplan, fetchWorkplan, fetchWorkplans} from '../service/WorkplanService';
-import { WorkplanData } from '../model/workplan';
+import {WorkplanData} from "../model/Workplan.ts";
 
 export function useWorkplans() {
     const queryClient = useQueryClient();
@@ -8,7 +8,6 @@ export function useWorkplans() {
     const { isLoading, isError, data: workplans } = useQuery({
         queryKey: ['workplans'],
         queryFn: fetchWorkplans,
-        refetchInterval: 5000,
     });
 
     const {
@@ -34,8 +33,6 @@ export function useWorkplans() {
         onSettled: () => {
             console.log('Mutation settled');
         },
-        retry: 3,
-        retryDelay: (attempt) => Math.min(attempt * 1000, 3000),
     });
 
     return {

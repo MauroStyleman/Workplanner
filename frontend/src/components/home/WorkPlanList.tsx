@@ -1,6 +1,6 @@
 import {Box, CircularProgress} from '@mui/material';
 import {useWorkplans} from '../../hooks/UseWorkPlans';
-import {Workplan, WorkplanData} from "../../model/workplan.ts";
+import {Workplan, WorkplanData} from "../../model/Workplan.ts";
 import WorkplanCard from "./WorkPlanCard.tsx";
 
 export function WorkplanList() {

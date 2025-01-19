@@ -1,5 +1,5 @@
-import {WorkplanData} from "../model/workplan.ts";
 import axios from 'axios';
+import {WorkplanData} from "../model/Workplan.ts";
 
 
 export const createWorkplan = (newWorkplan: WorkplanData) => {
