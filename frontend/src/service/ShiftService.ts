@@ -13,3 +13,8 @@ export const fetchShifts = async () => {
     const response = await axios.get(`http://localhost:5077/api/Shift`);
     return response.data;
 }
+
+export const fetchShift = async (shiftId: string) => {
+    const response = await axios.get(`http://localhost:5077/api/Shift/${shiftId}`);
+    return response.data;
+}

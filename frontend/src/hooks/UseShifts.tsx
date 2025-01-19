@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {createShift, fetchShifts} from "../service/ShiftService.ts";
+import {createShift, fetchShift, fetchShifts} from "../service/ShiftService.ts";
 import {ShiftData} from "../model/Shift.ts";
 
 export function useShifts() {
@@ -47,5 +47,18 @@ export function useShifts() {
         status,
         failureCount,
         reset,
+    };
+}
+
+export  function  useShift(shiftId: string) {
+    const { isLoading, isError, data: shift } = useQuery({
+        queryKey: ['shift', shiftId],
+        queryFn: () => fetchShift(shiftId),
+    });
+
+    return {
+        isLoading,
+        isError,
+        shift,
     };
 }
