@@ -62,4 +62,40 @@ public class PlanningPeriodController : ControllerBase
         }));
     }
     
+    [HttpGet("withShift/{id}")]
+    public ActionResult<PlanningPeriodWithPlanningShiftsDto> GetPlanningPeriodWithShifts(Guid id)
+    {
+        var planningPeriodWithShifts = _manager.GetPlanningPeriodWithShifts(id);
+
+        if (planningPeriodWithShifts == null)
+        {
+            return NotFound($"PlanningPeriod with ID {id} not found.");
+        }
+        
+        var response = new PlanningPeriodWithPlanningShiftsDto
+        {
+            Id = planningPeriodWithShifts.Id,
+            Start = planningPeriodWithShifts.Start,
+            End = planningPeriodWithShifts.End,
+            Name = planningPeriodWithShifts.Name,
+            PlanningShiftsDtos = planningPeriodWithShifts.PlanningShifts.Select(ps => new PlanningShiftDtoWithShifts
+            {
+                Id = ps.Id,
+                Date = ps.Date,
+                PlanningPeriodId = planningPeriodWithShifts.Id,
+                Shift = new ShiftDto
+                {
+                    Id = ps.Shift.Id,
+                    Name = ps.Shift.Name,
+                    Start = ps.Shift.Start,
+                    End = ps.Shift.End,
+                    Color = ps.Shift.Color
+                }
+            }).ToList()
+        };
+
+        return Ok(response);
+    }
+
+
 }

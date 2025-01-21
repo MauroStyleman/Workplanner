@@ -9,5 +9,8 @@ public interface IPlanningPeriodrepository
     void CreatePlanningPeriod(PlanningPeriod planningPeriod);
     
     IEnumerable<PlanningPeriod> ReadAllPlanningPeriods();
-    
+
+
+    PlanningPeriod ReadPlanningPeriodWithShifts(Guid planningPeriodId);
+
 }

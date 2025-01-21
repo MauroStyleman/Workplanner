@@ -46,4 +46,10 @@ public class PlanningPeriodManager : IPlanningPeriodManager
         _logger.LogInformation("Getting all planning periods.");
         return _planningPeriodRepository.ReadAllPlanningPeriods();
     }
+
+    public PlanningPeriod GetPlanningPeriodWithShifts(Guid planningPeriodId)
+    {
+        _logger.LogInformation("Getting planning period with shifts.");
+        return _planningPeriodRepository.ReadPlanningPeriodWithShifts(planningPeriodId);
+    }
 }
