@@ -21,10 +21,6 @@ public class PlanningShiftManager : IPlanningShiftManager
         _planningPeriodrepository = planningPeriodrepository;
     }
 
-    private bool ShiftAlreadyExists(DateOnly date, PlanningPeriod planningPeriod, Shift shift)
-    {
-        return _planningShiftRepository.Exists(date, planningPeriod.Id, shift.Id);
-    }
 
     public List<PlanningShift> AddPlanningShifts(
         DateOnly date,
@@ -36,35 +32,47 @@ public class PlanningShiftManager : IPlanningShiftManager
         RecurrenceType recurrenceType = RecurrenceType.Daily)
     {
         var planningShifts = new List<PlanningShift>();
-        PlanningPeriod planningPeriod = _planningPeriodrepository.ReadPlanningPeriodById(planningPeriodId) ??
-                                        throw new InvalidOperationException();
-        Shift shift = _shiftRepository.ReadShiftById(shiftId) ?? throw new InvalidOperationException();
+        var planningPeriod = GetPlanningPeriodById(planningPeriodId);
+        var shift = GetShiftById(shiftId);
 
         ValidateDateWithinPlanningPeriod(date, planningPeriod);
         ValidateEndDate(endDate, date, planningPeriod);
 
         if (!isRecurring)
         {
-            _logger.LogInformation("Adding a single planning shift.");
-            if (ShiftAlreadyExists(date, planningPeriod, shift))
-            {
-                _logger.LogWarning($"Shift {shift.Id} already exists on {date}. Skipping.");
-            }
-            else
-            {
-                planningShifts.Add(AddPlanningShift(date, planningPeriod, shift));
-            }
-
+            AddSingleShift(date, planningPeriod, shift, planningShifts);
             return planningShifts;
         }
 
-        var finalEndDate = endDate.HasValue && endDate.Value < planningPeriod.End
-            ? endDate.Value
-            : planningPeriod.End;
+        AddRecurringShifts(date, endDate, interval, recurrenceType, planningPeriod, shift, planningShifts);
+        return planningShifts;
+    }
 
-        _logger.LogInformation("Adding recurring planning shifts.");
-        var recurrenceStrategy = RecurrenceStrategyFactory.GetStrategy(recurrenceType);
-        var recurrenceDates = recurrenceStrategy.GetRecurrenceDates(date, finalEndDate, interval);
+    private PlanningPeriod GetPlanningPeriodById(Guid id) =>
+        _planningPeriodrepository.ReadPlanningPeriodById(id) ?? throw new InvalidOperationException();
+
+    private Shift GetShiftById(Guid id) =>
+        _shiftRepository.ReadShiftById(id) ?? throw new InvalidOperationException();
+
+    private void AddSingleShift(DateOnly date, PlanningPeriod planningPeriod, Shift shift,
+        List<PlanningShift> planningShifts)
+    {
+        if (ShiftAlreadyExists(date, planningPeriod, shift))
+        {
+            _logger.LogWarning($"Shift {shift.Id} already exists on {date}. Skipping.");
+            return;
+        }
+
+        _logger.LogInformation("Adding a single planning shift.");
+        planningShifts.Add(AddPlanningShift(date, planningPeriod, shift));
+    }
+
+    private void AddRecurringShifts(DateOnly startDate, DateOnly? endDate, int interval, RecurrenceType recurrenceType,
+        PlanningPeriod planningPeriod, Shift shift, List<PlanningShift> planningShifts)
+    {
+        var finalEndDate = endDate.HasValue && endDate.Value < planningPeriod.End ? endDate.Value : planningPeriod.End;
+        var recurrenceDates = RecurrenceStrategyFactory.GetStrategy(recurrenceType)
+            .GetRecurrenceDates(startDate, finalEndDate, interval);
 
         foreach (var currentDate in recurrenceDates)
         {
@@ -73,6 +81,7 @@ public class PlanningShiftManager : IPlanningShiftManager
                 _logger.LogWarning($"Shift {shift.Id} already exists on {currentDate}. Skipping.");
                 continue;
             }
+
             _logger.LogInformation($"Adding planning shift for {currentDate}.");
             try
             {
@@ -83,10 +92,7 @@ public class PlanningShiftManager : IPlanningShiftManager
                 _logger.LogError($"Failed to add planning shift for {currentDate}: {ex.Message}");
             }
         }
-
-        return planningShifts;
     }
-
 
     private PlanningShift AddPlanningShift(DateOnly date, PlanningPeriod planningPeriod, Shift shift)
     {
@@ -125,5 +131,10 @@ public class PlanningShiftManager : IPlanningShiftManager
         {
             throw new ArgumentException("End date is after the planning period end.");
         }
+    }
+
+    private bool ShiftAlreadyExists(DateOnly date, PlanningPeriod planningPeriod, Shift shift)
+    {
+        return _planningShiftRepository.Exists(date, planningPeriod.Id, shift.Id);
     }
 }
