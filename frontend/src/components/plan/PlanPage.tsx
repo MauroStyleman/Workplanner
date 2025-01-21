@@ -95,6 +95,7 @@ export function PlanPage() {
     // Handle pagination change for months
     const handleMonthChange = (_: React.ChangeEvent<unknown>, newPage: number) => setCurrentMonthIndex(newPage - 1);
 
+    console.log(workplan)
 
     return (
         <Box sx={{padding: 3, display: 'flex', flexDirection: 'row', gap: 3}}>
