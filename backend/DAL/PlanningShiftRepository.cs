@@ -20,4 +20,13 @@ public class PlanningShiftRepository : IPlanningShiftRepository
         _context.SaveChanges();
         _logger.LogInformation("Planning shift created.");
     }
+    
+    public bool Exists(DateOnly date, Guid planningPeriodId, Guid shiftId)
+    {
+        return _context.PlanningShifts.Any(ps =>
+            ps.Date == date &&
+            ps.PlanningPeriod.Id == planningPeriodId &&
+            ps.Shift.Id == shiftId);
+    }
+
 }

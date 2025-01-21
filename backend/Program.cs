@@ -28,6 +28,8 @@ builder.Services.AddScoped<IPlanningPeriodrepository,PlanningPeriodRepository>()
 builder.Services.AddScoped<IPlanningPeriodManager,PlanningPeriodManager>();
 builder.Services.AddScoped<IShiftRepository,ShiftRepository>();
 builder.Services.AddScoped<IShiftManager,ShiftManager>();
+builder.Services.AddScoped<IPlanningShiftRepository,PlanningShiftRepository>();
+builder.Services.AddScoped<IPlanningShiftManager,PlanningShiftManager>();
 
 
 var app = builder.Build();

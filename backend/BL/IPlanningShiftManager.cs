@@ -5,18 +5,14 @@ namespace Workplanner.BL;
 public interface IPlanningShiftManager
 {
     public List<PlanningShift> AddPlanningShifts(
-        DateOnly date, 
-        PlanningPeriod planningPeriod, 
-        Shift shift, 
-        User user,
-        DateOnly start, 
-        DateOnly end, 
-        int interval,
-        RecurrenceType recurrenceType);
+        DateOnly date,
+        Guid planningPeriodId,
+        Guid shiftId,
+        bool isRecurring = false,
+        DateOnly? endDate = null,
+        int interval = 1,
+        RecurrenceType recurrenceType = RecurrenceType.Daily);
     
-    public PlanningShift AddPlanningShift(
-        DateOnly date, 
-        PlanningPeriod planningPeriod, 
-        Shift shift, 
-        User user);
+    
+
 }

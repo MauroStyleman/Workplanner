@@ -9,5 +9,5 @@ public class PlanningShift
     public DateOnly Date { get; set; }
     public PlanningPeriod PlanningPeriod { get; set; }
     public Shift Shift { get; set; }
-   [AllowNull] public User User { get; set; }
+    public User? User { get; set; }
 }
