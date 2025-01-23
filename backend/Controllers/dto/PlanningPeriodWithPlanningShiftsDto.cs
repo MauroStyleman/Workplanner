@@ -8,6 +8,6 @@ public class PlanningPeriodWithPlanningShiftsDto
     [Required] public DateOnly Start { get; set; }
     [Required] public DateOnly End { get; set; }
     [Required] [MaxLength(20)] public required string Name { get; set; }
-    public List<PlanningShiftDtoWithShifts> PlanningShiftsDtos { get; set; }
+    public List<PlanningShiftDtoWithShifts>? PlanningShifts { get; set; }
     
 }

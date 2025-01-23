@@ -78,7 +78,7 @@ public class PlanningPeriodController : ControllerBase
             Start = planningPeriodWithShifts.Start,
             End = planningPeriodWithShifts.End,
             Name = planningPeriodWithShifts.Name,
-            PlanningShiftsDtos = planningPeriodWithShifts.PlanningShifts.Select(ps => new PlanningShiftDtoWithShifts
+            PlanningShifts = planningPeriodWithShifts.PlanningShifts.Select(ps => new PlanningShiftDtoWithShifts
             {
                 Id = ps.Id,
                 Date = ps.Date,
