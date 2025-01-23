@@ -5,7 +5,7 @@ export type Workplan = {
     name: string;
     start: string;
     end: string;
-    planningShiftsDtos: PlanningShift[];
+    planningShifts: PlanningShift[];
 };
 
 export type WorkplanData = Omit<Workplan, 'id'>;

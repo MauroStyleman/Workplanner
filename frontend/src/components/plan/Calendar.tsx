@@ -1,5 +1,7 @@
-import { Box, Paper, Typography } from "@mui/material";
+import {Box, Paper, Typography} from "@mui/material";
 import {CalendarPagination} from "./Calendarpagination.tsx";
+import {PlanningShift} from "../../model/PlanningShift.ts";
+import {ShiftIndicator} from "./ShiftIndicator.tsx";
 
 // Helper function to format the date
 const formatDate = (date: Date) => date.getDate();
@@ -10,12 +12,30 @@ interface CalendarProps {
     totalMonths: number;
     currentMonthIndex: number;
     handleMonthChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+    planningShifts: PlanningShift[];
 }
 
 
-
-export const Calendar = ({ weeks, currentMonth, totalMonths, currentMonthIndex, handleMonthChange }: CalendarProps) => {
+export const Calendar = ({
+                             weeks,
+                             currentMonth,
+                             totalMonths,
+                             currentMonthIndex,
+                             handleMonthChange,
+                             planningShifts
+                         }: CalendarProps) => {
     const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    const shiftsByDate = planningShifts.reduce((acc, shift) => {
+        if (!acc[shift.date]) {
+            acc[shift.date] = [];
+        }
+        acc[shift.date].push(shift.shift);
+        acc[shift.date].sort((a, b) => a.name.localeCompare(b.name));
+        return acc;
+    }, {} as { [key: string]: PlanningShift["shift"][] });
+
+
 
     return (
         <Box sx={{
@@ -71,9 +91,12 @@ export const Calendar = ({ weeks, currentMonth, totalMonths, currentMonthIndex, 
                                             backgroundColor: "var(--text)",
                                             color: "var(--text)",
                                             display: "flex",
-                                            justifyContent: "flex-end",
+                                            justifyContent: "flex-start",
+                                            alignItems: "flex-end",
+                                            flexDirection: "column",
                                         }}
                                     >
+
                                         <Typography
                                             variant="body1"
                                             sx={{
@@ -90,6 +113,14 @@ export const Calendar = ({ weeks, currentMonth, totalMonths, currentMonthIndex, 
                                         >
                                             {formatDate(date)}
                                         </Typography>
+                                        {shiftsByDate[date.toISOString().split('T')[0]] && (
+                                            <ShiftIndicator
+                                                shifts={shiftsByDate[date.toISOString().split('T')[0]]}
+                                                onClick={(shift, index) => {
+                                                    console.log(`Clicked on shift: ${shift.name}, Index: ${index}`);
+                                                }}
+                                            />
+                                        )}
                                     </Paper>
                                 </td>
                             ) : (

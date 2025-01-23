@@ -88,7 +88,7 @@ export function PlanPage() {
     }
 
     const currentMonth = new Date(Number(displayedMonthKey.split("-")[0]),
-        Number(displayedMonthKey.split("-")[1]) - 1).toLocaleString("default",
+        Number(displayedMonthKey.split("-")[1])).toLocaleString("default",
         { month: "long",
             year: "numeric" });
 
@@ -112,6 +112,7 @@ export function PlanPage() {
                             totalMonths={monthKeys.length}
                             currentMonthIndex={currentMonthIndex}
                             handleMonthChange={handleMonthChange}
+                            planningShifts={workplan.planningShifts}
                         />
                     </Box>
                 </Box>
