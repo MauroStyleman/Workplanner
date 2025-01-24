@@ -121,6 +121,7 @@ export function TimePeriodModal() {
             name,
             start: startFormatted,
             end: endFormatted,
+            planningShifts: [],
         };
 
         addWorkplan(newWorkplan, {

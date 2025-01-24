@@ -1,10 +1,9 @@
-import {Box, Paper, Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import {CalendarPagination} from "./Calendarpagination.tsx";
 import {PlanningShift} from "../../model/PlanningShift.ts";
-import {ShiftIndicator} from "./ShiftIndicator.tsx";
+import {CalendarCard, OffSetCalendarCard} from "./CalendarCard.tsx";
 
 // Helper function to format the date
-const formatDate = (date: Date) => date.getDate();
 
 interface CalendarProps {
     weeks: (Date | null)[][],
@@ -82,60 +81,20 @@ export const Calendar = ({
                         {week.map((date, idx) => (
                             date ? (
                                 <td key={idx} style={{textAlign: "center", padding: 2, margin: 0}}>
-                                    <Paper
-                                        elevation={2}
-                                        sx={{
-                                            padding: 1,
-                                            width: {xs: 35, sm: 50, md: 70, lg: 90},
-                                            height: {xs: 35, sm: 50, md: 70, lg: 90},
-                                            backgroundColor: "var(--text)",
-                                            color: "var(--text)",
-                                            display: "flex",
-                                            justifyContent: "flex-start",
-                                            alignItems: "flex-end",
-                                            flexDirection: "column",
+                                    <CalendarCard
+                                        date={date}
+                                        shifts={shiftsByDate[date.toISOString().split('T')[0]]}
+                                        onDateClick={(selectedDate) => {
+                                            console.log(`Clicked on date: ${selectedDate}`);
                                         }}
-                                    >
-
-                                        <Typography
-                                            variant="body1"
-                                            sx={{
-                                                border: "2px solid var(--secondary)",
-                                                borderRadius: "50%",
-                                                backgroundColor: "var(--accent)",
-                                                width: 10,
-                                                height: 10,
-                                                display: "flex",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                                padding: 1,
-                                            }}
-                                        >
-                                            {formatDate(date)}
-                                        </Typography>
-                                        {shiftsByDate[date.toISOString().split('T')[0]] && (
-                                            <ShiftIndicator
-                                                shifts={shiftsByDate[date.toISOString().split('T')[0]]}
-                                                onClick={(shift, index) => {
-                                                    console.log(`Clicked on shift: ${shift.name}, Index: ${index}`);
-                                                }}
-                                            />
-                                        )}
-                                    </Paper>
+                                        onShiftClick={(shift, index) => {
+                                            console.log(`Clicked on shift: ${shift.name}, Index: ${index}`);
+                                        }}
+                                    />
                                 </td>
                             ) : (
                                 <td key={idx} style={{textAlign: "center", padding: 2, margin: 0}}>
-                                    <Paper
-                                        sx={{
-                                            padding: 1,
-                                            width: {xs: 35, sm: 50, md: 70, lg: 90},
-                                            height: {xs: 35, sm: 50, md: 70, lg: 90},
-                                            backgroundColor: "var(--accent)",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                    </Paper>
+                                        <OffSetCalendarCard></OffSetCalendarCard>
                                 </td>
                             )
                         ))}
