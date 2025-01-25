@@ -1,5 +1,7 @@
-import { Paper, Typography } from "@mui/material";
-import { ShiftIndicator } from "./ShiftIndicator";
+import {Paper, Typography} from "@mui/material";
+import {ShiftIndicator} from "./ShiftIndicator";
+import {PlanningShiftModal} from "./PlanningShiftModal.tsx";
+import {useState} from "react";
 
 interface Shift {
     name: string;
@@ -9,13 +11,22 @@ interface Shift {
 interface CalendarCardProps {
     date: Date;
     shifts?: Shift[];
-    onDateClick?: (date: Date) => void;
     onShiftClick?: (shift: Shift, index: number) => void;
 }
 
-export const CalendarCard = ({ date, shifts, onDateClick, onShiftClick }: CalendarCardProps) => {
+export const CalendarCard = ({ date, shifts, onShiftClick }: CalendarCardProps) => {
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const handleCardClick = () => {
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => setModalOpen(false);
+
     const formatDate = (date: Date) => date.getDate();
     return (
+        <>
+
         <Paper
             elevation={2}
             sx={{
@@ -33,7 +44,7 @@ export const CalendarCard = ({ date, shifts, onDateClick, onShiftClick }: Calend
                    backgroundColor: "var(--primary)",
                 },
             }}
-            onClick={() => onDateClick && onDateClick(date)}
+            onClick={handleCardClick}
         >
             <Typography
                 variant="body1"
@@ -58,6 +69,12 @@ export const CalendarCard = ({ date, shifts, onDateClick, onShiftClick }: Calend
                 />
             )}
         </Paper>
+            <PlanningShiftModal
+                open={modalOpen}
+                onClose={handleCloseModal}
+                date={date}
+            />
+        </>
     );
 };
 

@@ -84,9 +84,6 @@ export const Calendar = ({
                                     <CalendarCard
                                         date={date}
                                         shifts={shiftsByDate[date.toISOString().split('T')[0]]}
-                                        onDateClick={(selectedDate) => {
-                                            console.log(`Clicked on date: ${selectedDate}`);
-                                        }}
                                         onShiftClick={(shift, index) => {
                                             console.log(`Clicked on shift: ${shift.name}, Index: ${index}`);
                                         }}
