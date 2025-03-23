@@ -4,6 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import {TimePeriodModal} from "./TimePeriodModal.tsx";
 import {ShiftModal} from "../shift/ShiftModal.tsx";
+import {UserModal} from "./UserModal.tsx";
 
 
 
@@ -24,6 +25,7 @@ export default function HomeNavbar() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Workplanning
                     </Typography>
+                    <UserModal />
                     <ShiftModal />
                     <TimePeriodModal />
                 </Toolbar>

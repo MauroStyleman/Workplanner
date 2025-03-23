@@ -1,11 +1,14 @@
 :root {
   /* Standard Color Palette */
-  --text: #eef4f6;
-  --background: #040809;
-  --background-secondary: #111415;
-  --primary: #a2ced8;
-  --secondary: #2e717e;
-  --accent: #48b0c5;
+
+  --background-secondary: #f4f2ef;
+  --text: #0d0c08;
+  --background: #f9f7f5;
+  --primary: #a69772;
+  --secondary: #bfc9aa;
+  --accent: #9fb88f;
+
+
 
   /* Typography */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -76,11 +79,11 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     /* Light Mode Palette */
-    --text: #040809;
-    --background: #eef4f6;
-    --primary: #2e717e;
-    --secondary: #a2ced8;
-    --accent: #48b0c5;
+    --text: #07101c;
+    --background:  #f1f5fc;
+    --primary: #4684d1;
+    --secondary: #d886e1;
+    --accent:  #da6bb3;
   }
 
   body {

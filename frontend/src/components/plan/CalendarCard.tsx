@@ -33,7 +33,7 @@ export const CalendarCard = ({ date, shifts, onShiftClick }: CalendarCardProps) 
                 padding: 1,
                 width: { xs: 35, sm: 50, md: 70, lg: 90 },
                 height: { xs: 35, sm: 50, md: 70, lg: 90 },
-                backgroundColor: "var(--text)",
+                backgroundColor: "var(--secondary)",
                 color: "var(--text)",
                 display: "flex",
                 justifyContent: "flex-start",
@@ -49,7 +49,7 @@ export const CalendarCard = ({ date, shifts, onShiftClick }: CalendarCardProps) 
             <Typography
                 variant="body1"
                 sx={{
-                    border: "2px solid var(--secondary)",
+                    border: "2px solid var(--primary)",
                     borderRadius: "50%",
                     backgroundColor: "var(--accent)",
                     width: 10,
@@ -58,6 +58,7 @@ export const CalendarCard = ({ date, shifts, onShiftClick }: CalendarCardProps) 
                     justifyContent: "center",
                     alignItems: "center",
                     padding: 1,
+                    color: "var(--background)"
                 }}
             >
                 {formatDate(date)}
