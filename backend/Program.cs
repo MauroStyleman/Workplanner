@@ -30,6 +30,8 @@ builder.Services.AddScoped<IShiftRepository,ShiftRepository>();
 builder.Services.AddScoped<IShiftManager,ShiftManager>();
 builder.Services.AddScoped<IPlanningShiftRepository,PlanningShiftRepository>();
 builder.Services.AddScoped<IPlanningShiftManager,PlanningShiftManager>();
+builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 var app = builder.Build();
