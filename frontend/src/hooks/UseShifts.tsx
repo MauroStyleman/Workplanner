@@ -1,5 +1,10 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {createShift, fetchShift, fetchShifts} from "../service/ShiftService.ts";
+import {
+    createShift,
+    fetchShift,
+    fetchShifts,
+    fetchShiftsThatDontExistYetOnPlanningShifts
+} from "../service/ShiftService.ts";
 import {ShiftData} from "../model/Shift.ts";
 
 export function useShifts() {
@@ -60,5 +65,20 @@ export  function  useShift(shiftId: string) {
         isLoading,
         isError,
         shift,
+    };
+}
+
+export function useShiftsNotOnPlanning(workplanId: string, date: Date,  enabled: boolean) {
+    const formattedDate = date.toISOString().split('T')[0];
+    const { isLoading, isError, data: shifts } = useQuery({
+        queryKey: ['shifts', workplanId, date],
+        queryFn: () => fetchShiftsThatDontExistYetOnPlanningShifts(workplanId, formattedDate),
+        enabled: enabled,
+    });
+
+    return {
+        isLoading,
+        isError,
+        shifts,
     };
 }

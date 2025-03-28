@@ -1,9 +1,13 @@
-import {Modal} from "@mui/material";
-import Box from "@mui/material/Box";
+import {Alert, CircularProgress, Modal} from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import {useState} from "react";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {useShiftsNotOnPlanning} from "../../hooks/UseShifts.tsx";
+import {useParams} from "react-router-dom";
+import { Box, Select, MenuItem} from '@mui/material';
+import {Shift} from "../../model/Shift.ts";
+
 
 
 interface PlanningShiftModalProps {
@@ -29,6 +33,29 @@ const style = {
 
 export const PlanningShiftModal = ({open,onClose,date,startDate,endDate} : PlanningShiftModalProps) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(date);
+    const [isSelectOpen, setIsSelectOpen] = useState(false);
+    const { id } = useParams();
+
+
+    const { isLoading: shiftLoading, isError: shiftError, shifts } = useShiftsNotOnPlanning(
+        id!,
+        date,
+        isSelectOpen // Pass isSelectOpen as the enabled option
+    );
+
+
+    // Handle when select box is opened
+    const handleSelectOpen = () => {
+        setIsSelectOpen(true); // Trigger the fetch when the select box opens
+    };
+
+    // Handle when select box is closed
+    const handleSelectClose = () => {
+        setIsSelectOpen(false); // Stop fetching data if needed
+    };
+
+
+    console.log(shifts)
     return (
         <Modal
             open={open}
@@ -47,6 +74,30 @@ export const PlanningShiftModal = ({open,onClose,date,startDate,endDate} : Plann
                     maxDate={endDate}
                 />
                 </LocalizationProvider>
+                <Select
+                    labelId="shift-select-label"
+
+                    displayEmpty
+                    onOpen={handleSelectOpen} // Trigger fetching when select box is opened
+                    onClose={handleSelectClose} // Stop fetching when select box is closed
+                >
+                    {shiftLoading && <CircularProgress sx={{ padding: 2 }} />}
+                    {shiftError && (
+                        <Alert severity="error" sx={{ marginTop: 2 }}>
+                            Error loading shifts. Please try again later.
+                        </Alert>
+                    )}
+
+                    {shifts && shifts.length > 0 ? (
+                        shifts.map((shift : Shift) => (
+                            <MenuItem key={shift.id} value={shift.id}>
+                                {shift.name}
+                            </MenuItem>
+                        ))
+                    ) : (
+                        <MenuItem disabled>No shifts available</MenuItem>
+                    )}
+                </Select>
             </Box>
 </Modal>
     );

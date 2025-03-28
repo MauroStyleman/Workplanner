@@ -18,3 +18,8 @@ export const fetchShift = async (shiftId: string) => {
     const response = await axios.get(`http://localhost:5077/api/Shift/${shiftId}`);
     return response.data;
 }
+
+export const fetchShiftsThatDontExistYetOnPlanningShifts = async (workplanId: string, date: string) => {
+    const response = await axios.get(`http://localhost:5077/api/Shift/notonplanning/${workplanId}/${date}`);
+    return response.data;
+}
