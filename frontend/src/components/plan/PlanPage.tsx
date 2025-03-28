@@ -113,6 +113,8 @@ export function PlanPage() {
                             currentMonthIndex={currentMonthIndex}
                             handleMonthChange={handleMonthChange}
                             planningShifts={workplan.planningShifts}
+                            startDate={startDate}
+                            endDate={endDate}
                         />
                     </Box>
                 </Box>

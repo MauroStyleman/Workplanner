@@ -65,4 +65,18 @@ public class ShiftController : ControllerBase
         }));
     }
     
+    [HttpGet("notonplanning/{planningPeriodId}/{selectedDate}")]
+    public ActionResult<IEnumerable<ShiftDto>> GetAllShiftsThatDontExistYetOnPlanningShift(DateOnly selectedDate, Guid planningPeriodId)
+    {
+        var shifts = _manager.GetAllShiftsThatDontExistYetOnPlanningShift(selectedDate, planningPeriodId);
+        return Ok(shifts.Select(shift => new ShiftDto()
+        {
+            Id = shift.Id,
+            Start = shift.Start,
+            End = shift.End,
+            Name = shift.Name,
+            Color = shift.Color
+        }));
+    }
+    
 }

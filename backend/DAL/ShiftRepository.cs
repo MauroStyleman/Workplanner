@@ -35,4 +35,11 @@ public class ShiftRepository : IShiftRepository
         _logger.LogInformation("Getting all shifts.");
         return _context.Shifts.ToList();
     }
+
+    public IQueryable<Shift> ReadAllShiftsThatDontExistYetOnPlanningShift(DateOnly selectedDate,Guid planningPeriodId)
+    {
+        _logger.LogInformation("Getting all shifts that don't exist yet on planning shift.");
+        return _context.Shifts.Where(s => !_context.PlanningShifts.Any(ps =>
+            ps.Date == selectedDate && ps.PlanningPeriod.Id == planningPeriodId && ps.Shift.Id == s.Id));
+    }
 }

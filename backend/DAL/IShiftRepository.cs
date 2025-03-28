@@ -9,4 +9,5 @@ public interface IShiftRepository
     void CreateShift(Shift shift);
     
     IEnumerable<Shift> ReadAllShifts();
+    IQueryable<Shift> ReadAllShiftsThatDontExistYetOnPlanningShift(DateOnly selectedDate,Guid planningPeriodId);
 }

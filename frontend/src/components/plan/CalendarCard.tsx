@@ -12,9 +12,11 @@ interface CalendarCardProps {
     date: Date;
     shifts?: Shift[];
     onShiftClick?: (shift: Shift, index: number) => void;
+    startDate: Date;
+    endDate: Date;
 }
 
-export const CalendarCard = ({ date, shifts, onShiftClick }: CalendarCardProps) => {
+export const CalendarCard = ({ date, shifts, onShiftClick, startDate,endDate }: CalendarCardProps) => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const handleCardClick = () => {
@@ -74,6 +76,8 @@ export const CalendarCard = ({ date, shifts, onShiftClick }: CalendarCardProps) 
                 open={modalOpen}
                 onClose={handleCloseModal}
                 date={date}
+                startDate={startDate}
+                endDate={endDate}
             />
         </>
     );

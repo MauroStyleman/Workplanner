@@ -12,6 +12,8 @@ interface CalendarProps {
     currentMonthIndex: number;
     handleMonthChange: (event: React.ChangeEvent<unknown>, value: number) => void;
     planningShifts: PlanningShift[];
+    startDate: Date;
+    endDate: Date;
 }
 
 
@@ -21,7 +23,8 @@ export const Calendar = ({
                              totalMonths,
                              currentMonthIndex,
                              handleMonthChange,
-                             planningShifts
+                             planningShifts, startDate, endDate,
+
                          }: CalendarProps) => {
     const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -87,6 +90,8 @@ export const Calendar = ({
                                         onShiftClick={(shift, index) => {
                                             console.log(`Clicked on shift: ${shift.name}, Index: ${index}`);
                                         }}
+                                        startDate={startDate}
+                                        endDate={endDate}
                                     />
                                 </td>
                             ) : (

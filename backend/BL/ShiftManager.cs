@@ -44,4 +44,10 @@ public class ShiftManager : IShiftManager
         _logger.LogInformation("Getting all shifts.");
         return _shiftRepository.ReadAllShifts();
     }
+
+    public IEnumerable<Shift> GetAllShiftsThatDontExistYetOnPlanningShift(DateOnly selectedDate, Guid planningPeriodId)
+    {
+        _logger.LogInformation("Getting all shifts that don't exist yet on planning shift.");
+        return _shiftRepository.ReadAllShiftsThatDontExistYetOnPlanningShift(selectedDate, planningPeriodId);
+    }
 }

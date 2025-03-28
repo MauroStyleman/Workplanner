@@ -29,6 +29,8 @@ public class UserManager : IUserManager
 
     public User CreateUser(string firstName, string lastName, string email)
     {
+
+        
         _logger.LogInformation("Creating a new user.");
         var user= new User()
         {
@@ -44,7 +46,7 @@ public class UserManager : IUserManager
         return user;
     }
 
-    public IQueryable<User>? SearchUsersByName(string name)
+    public IEnumerable<User>? SearchUsersByName(string name)
     {
         _logger.LogInformation("Searching for users by name.");
 

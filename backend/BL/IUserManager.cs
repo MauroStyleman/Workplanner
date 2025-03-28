@@ -8,6 +8,6 @@ public interface IUserManager
     IEnumerable<User> GetAllUsers();
     User CreateUser(string firstName, string lastName, string email);
     
-    IQueryable<User>? SearchUsersByName(string name);
+    IEnumerable<User>? SearchUsersByName(string name);
 
 }

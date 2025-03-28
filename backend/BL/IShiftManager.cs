@@ -9,4 +9,6 @@ public interface IShiftManager
     Shift AddShift(string name,string start, string end);
     
     IEnumerable<Shift> GetAllShifts();
+
+    IEnumerable<Shift> GetAllShiftsThatDontExistYetOnPlanningShift(DateOnly selectedDate, Guid planningPeriodId);
 }
