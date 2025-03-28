@@ -1,13 +1,21 @@
-import {Alert, CircularProgress, Modal} from "@mui/material";
+import {
+    Alert,
+    Box,
+    Button,
+    Checkbox,
+    CircularProgress,
+    MenuItem,
+    Modal,
+    Select,
+    SelectChangeEvent
+} from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {useShiftsNotOnPlanning} from "../../hooks/UseShifts.tsx";
 import {useParams} from "react-router-dom";
-import { Box, Select, MenuItem} from '@mui/material';
 import {Shift} from "../../model/Shift.ts";
-
 
 
 interface PlanningShiftModalProps {
@@ -33,29 +41,34 @@ const style = {
 
 export const PlanningShiftModal = ({open,onClose,date,startDate,endDate} : PlanningShiftModalProps) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(date);
-    const [isSelectOpen, setIsSelectOpen] = useState(false);
+    const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
+    const [selectedShift, setSelectedShift] = useState<string | null>(null);
+    const [isRecurrence, setIsRecurrence] = useState<boolean>(false);
+
     const { id } = useParams();
 
 
     const { isLoading: shiftLoading, isError: shiftError, shifts } = useShiftsNotOnPlanning(
         id!,
         date,
-        isSelectOpen // Pass isSelectOpen as the enabled option
+        open // Pass isSelectOpen as the enabled option
     );
 
+    useEffect(() => {
+        if (shifts && shifts.length > 0) {
+            setSelectedShift(shifts[0].id);
+        }
+    }, [shifts]);
 
-    // Handle when select box is opened
-    const handleSelectOpen = () => {
-        setIsSelectOpen(true); // Trigger the fetch when the select box opens
+    const handleShiftChange = (event: SelectChangeEvent) => {
+        setSelectedShift(event.target.value);
     };
 
-    // Handle when select box is closed
-    const handleSelectClose = () => {
-        setIsSelectOpen(false); // Stop fetching data if needed
+    const handleRecurrenceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsRecurrence(event.target.checked);
     };
 
 
-    console.log(shifts)
     return (
         <Modal
             open={open}
@@ -64,40 +77,74 @@ export const PlanningShiftModal = ({open,onClose,date,startDate,endDate} : Plann
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <h2 id="modal-modal-title">Select a Date</h2>
+                <h2 id="modal-modal-title">Add shift</h2>
                 <p id="modal-modal-description"></p>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                    value={selectedDate}
-                    onChange={(newDate) => setSelectedDate(newDate)}
-                    minDate={startDate}
-                    maxDate={endDate}
-                />
-                </LocalizationProvider>
-                <Select
-                    labelId="shift-select-label"
+                <Box sx={{flexDirection: "column", gap: 4}}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DatePicker
+                            value={selectedDate}
+                            onChange={(newDate) => setSelectedDate(newDate)}
+                            minDate={startDate}
+                            maxDate={endDate}
+                        />
+                    </LocalizationProvider>
 
-                    displayEmpty
-                    onOpen={handleSelectOpen} // Trigger fetching when select box is opened
-                    onClose={handleSelectClose} // Stop fetching when select box is closed
-                >
-                    {shiftLoading && <CircularProgress sx={{ padding: 2 }} />}
-                    {shiftError && (
-                        <Alert severity="error" sx={{ marginTop: 2 }}>
-                            Error loading shifts. Please try again later.
-                        </Alert>
-                    )}
+                    <Select
+                        labelId="shift-select-label"
+                        value={selectedShift || ''}
+                        onChange={handleShiftChange}
+                    >
+                        {shiftLoading && <CircularProgress sx={{padding: 2}}/>}
+                        {shiftError && (
+                            <Alert severity="error" sx={{marginTop: 2}}>
+                                Error loading shifts. Please try again later.
+                            </Alert>
+                        )}
 
-                    {shifts && shifts.length > 0 ? (
-                        shifts.map((shift : Shift) => (
-                            <MenuItem key={shift.id} value={shift.id}>
-                                {shift.name}
-                            </MenuItem>
-                        ))
-                    ) : (
-                        <MenuItem disabled>No shifts available</MenuItem>
-                    )}
-                </Select>
+                        {shifts && shifts.length > 0 ? (
+                            shifts.map((shift: Shift) => (
+                                <MenuItem key={shift.id} value={shift.id}>
+                                    {shift.name}
+                                </MenuItem>
+                            ))
+                        ) : (
+                            <MenuItem disabled>No shifts available</MenuItem>
+                        )}
+                    </Select>
+
+                    <Checkbox
+                        checked={isRecurrence}
+                        onChange={handleRecurrenceChange}
+                        name={"isRecurrence"}
+                        color={"primary"}
+                    >
+                    </Checkbox>
+                    {isRecurrence ? (
+                        <Box>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    value={selectedEndDate}
+                                    onChange={(newDate) => setSelectedEndDate(newDate)}
+                                    minDate={selectedDate || startDate}
+                                    maxDate={endDate}
+                                />
+                            </LocalizationProvider>
+                            <Button
+                                sx={{
+                                    color: 'var(--text)',
+                                    backgroundColor: 'var(--primary)',
+                                    '&:hover': {
+                                        backgroundColor: 'var(--accent)',
+                                        color: 'var(--text)',
+                                    },
+                                }}
+                                onClick={() => setSelectedEndDate(null)}>
+                                Clear
+                            </Button>
+                        </Box>
+
+                    ) : null}
+                </Box>
             </Box>
 </Modal>
     );
