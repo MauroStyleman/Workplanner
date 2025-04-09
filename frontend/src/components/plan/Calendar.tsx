@@ -29,11 +29,11 @@ export const Calendar = ({
     const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     const shiftsByDate = planningShifts.reduce((acc, shift) => {
-        if (!acc[shift.date]) {
-            acc[shift.date] = [];
+        if (!acc[shift.startDate]) {
+            acc[shift.startDate] = [];
         }
-        acc[shift.date].push(shift.shift);
-        acc[shift.date].sort((a, b) => a.name.localeCompare(b.name));
+        acc[shift.startDate].push(shift.shift);
+        acc[shift.startDate].sort((a, b) => a.name.localeCompare(b.name));
         return acc;
     }, {} as { [key: string]: PlanningShift["shift"][] });
 

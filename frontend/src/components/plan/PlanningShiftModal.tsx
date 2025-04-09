@@ -7,7 +7,12 @@ import {
     MenuItem,
     Modal,
     Select,
-    SelectChangeEvent
+    SelectChangeEvent,
+    Stack,
+    InputLabel,
+    FormControl,
+    FormControlLabel
+
 } from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import {useEffect, useState} from "react";
@@ -16,6 +21,8 @@ import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {useShiftsNotOnPlanning} from "../../hooks/UseShifts.tsx";
 import {useParams} from "react-router-dom";
 import {Shift} from "../../model/Shift.ts";
+import {AddPlanningShiftDto} from "../../model/PlanningShift.ts";
+import {createPlanningShift} from "../../service/PlanningShift.ts";
 
 
 interface PlanningShiftModalProps {
@@ -44,11 +51,28 @@ export const PlanningShiftModal = ({open,onClose,date,startDate,endDate} : Plann
     const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
     const [selectedShift, setSelectedShift] = useState<string | null>(null);
     const [isRecurrence, setIsRecurrence] = useState<boolean>(false);
+    const [intervalType, setIntervalType] = useState<string>('Daily');
+    const [intervalValue, setIntervalValue] = useState<number>(1);
 
-    const { id } = useParams();
+    const {id} = useParams();
 
+    const handleCreate = () => {
+        if (!selectedDate || !selectedShift || !id) return;
 
-    const { isLoading: shiftLoading, isError: shiftError, shifts } = useShiftsNotOnPlanning(
+        const newPlanningShift: AddPlanningShiftDto = {
+            date: selectedDate.toISOString().split("T")[0],
+            endDate: selectedEndDate ? selectedEndDate.toISOString().split("T")[0] : null,
+            interval: isRecurrence ? intervalValue : 1,
+            isRecurring: isRecurrence,
+            recurrenceType: isRecurrence ? intervalType : 'Daily',
+            planningPeriodId: id,
+            shiftId: selectedShift,
+        }
+
+        createPlanningShift(newPlanningShift)
+    };
+
+    const {isLoading: shiftLoading, isError: shiftError, shifts} = useShiftsNotOnPlanning(
         id!,
         date,
         open // Pass isSelectOpen as the enabled option
@@ -69,6 +93,7 @@ export const PlanningShiftModal = ({open,onClose,date,startDate,endDate} : Plann
     };
 
 
+
     return (
         <Modal
             open={open}
@@ -77,75 +102,148 @@ export const PlanningShiftModal = ({open,onClose,date,startDate,endDate} : Plann
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <h2 id="modal-modal-title">Add shift</h2>
-                <p id="modal-modal-description"></p>
-                <Box sx={{flexDirection: "column", gap: 4}}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
-                            value={selectedDate}
-                            onChange={(newDate) => setSelectedDate(newDate)}
-                            minDate={startDate}
-                            maxDate={endDate}
-                        />
-                    </LocalizationProvider>
+                <h2 id="modal-modal-title">Add Shift</h2>
 
-                    <Select
-                        labelId="shift-select-label"
-                        value={selectedShift || ''}
-                        onChange={handleShiftChange}
-                    >
-                        {shiftLoading && <CircularProgress sx={{padding: 2}}/>}
-                        {shiftError && (
-                            <Alert severity="error" sx={{marginTop: 2}}>
-                                Error loading shifts. Please try again later.
-                            </Alert>
-                        )}
+                <Box sx={{display: 'flex', flexDirection: 'column', gap: 3, mt: 2}}>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DatePicker
+                                label="Start Date"
+                                value={selectedDate}
+                                onChange={(newDate) => setSelectedDate(newDate)}
+                                minDate={startDate}
+                                maxDate={endDate}
+                            />
+                        </LocalizationProvider>
 
-                        {shifts && shifts.length > 0 ? (
-                            shifts.map((shift: Shift) => (
-                                <MenuItem key={shift.id} value={shift.id}>
-                                    {shift.name}
-                                </MenuItem>
-                            ))
-                        ) : (
-                            <MenuItem disabled>No shifts available</MenuItem>
-                        )}
-                    </Select>
+                        <FormControl fullWidth>
+                            <InputLabel id="shift-select-label">Shift</InputLabel>
+                            <Select
+                                labelId="shift-select-label"
+                                value={selectedShift || ''}
+                                onChange={handleShiftChange}
+                                label="Shift"
+                            >
+                                {shiftLoading && <MenuItem disabled><CircularProgress size={20}/></MenuItem>}
+                                {shiftError && (
+                                    <MenuItem disabled>
+                                        <Alert severity="error">Error loading shifts</Alert>
+                                    </MenuItem>
+                                )}
+                                {shifts && shifts.length > 0 ? (
+                                    shifts.map((shift: Shift) => (
+                                        <MenuItem key={shift.id} value={shift.id}>
+                                            {shift.name}
+                                        </MenuItem>
+                                    ))
+                                ) : (
+                                    <MenuItem disabled>No shifts available</MenuItem>
+                                )}
+                            </Select>
+                        </FormControl>
+                    </Stack>
 
-                    <Checkbox
-                        checked={isRecurrence}
-                        onChange={handleRecurrenceChange}
-                        name={"isRecurrence"}
-                        color={"primary"}
-                    >
-                    </Checkbox>
-                    {isRecurrence ? (
-                        <Box>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    value={selectedEndDate}
-                                    onChange={(newDate) => setSelectedEndDate(newDate)}
-                                    minDate={selectedDate || startDate}
-                                    maxDate={endDate}
-                                />
-                            </LocalizationProvider>
-                            <Button
-                                sx={{
-                                    color: 'var(--text)',
-                                    backgroundColor: 'var(--primary)',
-                                    '&:hover': {
-                                        backgroundColor: 'var(--accent)',
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={isRecurrence}
+                                onChange={handleRecurrenceChange}
+                                name="isRecurrence"
+                                color="primary"
+                            />
+                        }
+                        label="Repeat this shift"
+                    />
+
+                    {isRecurrence && (
+                        <>
+                            <Stack direction="row" spacing={2} alignItems="center">
+                                <FormControl fullWidth>
+                                    <InputLabel id="interval-type-label">Interval Type</InputLabel>
+                                    <Select
+                                        labelId="interval-type-label"
+                                        value={intervalType}
+                                        onChange={(e) => setIntervalType(e.target.value)}
+                                        label="Interval Type"
+                                    >
+                                        <MenuItem value="Daily">Daily</MenuItem>
+                                        <MenuItem value="Weekly">Weekly</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl fullWidth>
+                                    <InputLabel id="interval-value-label">Every</InputLabel>
+                                    <Select
+                                        labelId="interval-value-label"
+                                        value={intervalValue}
+                                        onChange={(e) => setIntervalValue(Number(e.target.value))}
+                                        label="Every"
+                                    >
+                                        {[...Array(31).keys()].map((i) => {
+                                            const value = i + 1;
+                                            return (
+                                                <MenuItem key={value} value={value}>
+                                                    {value}
+                                                </MenuItem>
+                                            );
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            </Stack>
+
+                            <Stack direction="row" spacing={2} alignItems="center">
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        label="End Date (optional)"
+                                        value={selectedEndDate}
+                                        onChange={(newDate) => setSelectedEndDate(newDate)}
+                                        minDate={selectedDate || startDate}
+                                        maxDate={endDate}
+                                    />
+                                </LocalizationProvider>
+
+                                <Button
+                                    onClick={() => setSelectedEndDate(null)}
+                                    sx={{
+                                        height: 'fit-content',
+                                        mt: 'auto',
+                                        mb: 'auto',
+                                        backgroundColor: 'var(--primary)',
                                         color: 'var(--text)',
-                                    },
-                                }}
-                                onClick={() => setSelectedEndDate(null)}>
-                                Clear
-                            </Button>
-                        </Box>
+                                        '&:hover': {
+                                            backgroundColor: 'var(--accent)',
+                                            color: 'var(--text)',
+                                        },
+                                    }}
+                                >
+                                    Clear
+                                </Button>
+                            </Stack>
+                        </>
 
-                    ) : null}
+                    )}
+                    <Button
+                        variant="contained"
+                        onClick={handleCreate}
+                        sx={{
+                            mt: 4,
+                            alignSelf: 'center',
+                            backgroundColor: 'var(--primary)',
+                            color: 'var(--text)',
+                            '&:hover': {
+                                backgroundColor: 'var(--accent)',
+                                color: 'var(--text)',
+                            },
+                            px: 4,
+                            py: 1.5,
+                            borderRadius: '12px',
+                        }}
+                    >
+                        Create
+                    </Button>
                 </Box>
             </Box>
-</Modal>
+        </Modal>
+
     );
 }
