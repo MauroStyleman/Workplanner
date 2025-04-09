@@ -10,7 +10,6 @@ public class RecurrenceStrategyFactory
         {
             RecurrenceType.Daily => new DailyRecurrenceStrategy(),
             RecurrenceType.Weekly => new WeeklyRecurrenceStrategy(),
-            RecurrenceType.Custom => new CustomRecurrenceStrategy(),
             _ => throw new NotImplementedException($"Recurrence type {recurrenceType} is not supported.")
         };
     }
